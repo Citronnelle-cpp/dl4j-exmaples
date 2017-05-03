@@ -9,6 +9,7 @@ import org.deeplearning4j.iterator.LabeledSentenceProvider;
 import org.deeplearning4j.iterator.provider.FileLabeledSentenceProvider;
 import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.embeddings.wordvectors.WordVectors;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.conf.ComputationGraphConfiguration;
 import org.deeplearning4j.nn.conf.ConvolutionMode;
@@ -41,9 +42,11 @@ public class CnnSentenceClassificationExample {
     /** Data URL for downloading */
     public static final String DATA_URL = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz";
     /** Location to save and extract the training/testing data */
-    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+//    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+    public static final String DATA_PATH = "/Users/zhouwei/DL4J/testdata";
     /** Location (local file system) for the Google News vectors. Set this manually. */
-    public static final String WORD_VECTORS_PATH = "/Users/zhouwei/DL4J/GoogleNews-vectors-negative300.bin.gz";
+//    public static final String WORD_VECTORS_PATH = "/Users/zhouwei/DL4J/GoogleNews-vectors-negative300.bin.gz";
+    public static final String WORD_VECTORS_PATH = "/Users/zhouwei/DL4J/corpus_300.model";
 
     public static void main(String[] args) throws Exception {
         if(WORD_VECTORS_PATH.startsWith("/PATH/TO/YOUR/VECTORS/")){
@@ -54,12 +57,14 @@ public class CnnSentenceClassificationExample {
         Word2VecSentimentRNN.downloadData();
 
         //Basic configuration
-        int batchSize = 32;
-        int vectorSize = 300;               //Size of the word vectors. 300 in the Google News model
+        int batchSize = 16;
+        int vectorSize = 100;               //Size of the word vectors. 300 in the Google News model
         int nEpochs = 1;                    //Number of epochs (full passes of training data) to train on
-        int truncateReviewsToLength = 256;  //Truncate reviews with length (# words) greater than this
+//        int truncateReviewsToLength = 256;  //Truncate reviews with length (# words) greater than this
+        int truncateReviewsToLength = 64;  //Truncate reviews with length (# words) greater than this
 
-        int cnnLayerFeatureMaps = 100;      //Number of feature maps / channels / depth for each CNN layer
+
+        int cnnLayerFeatureMaps = 50;      //Number of feature maps / channels / depth for each CNN layer
         PoolingType globalPoolingType = PoolingType.MAX;
         Random rng = new Random(12345); //For shuffling repeatability
 
@@ -133,7 +138,9 @@ public class CnnSentenceClassificationExample {
 
 
         //After training: load a single sentence and generate a prediction
-        String pathFirstNegativeFile = FilenameUtils.concat(DATA_PATH, "aclImdb/test/neg/0_2.txt");
+//        String pathFirstNegativeFile = FilenameUtils.concat(DATA_PATH, "aclImdb/test/neg/0_2.txt");
+        String pathFirstNegativeFile = FilenameUtils.concat(DATA_PATH, "neg/1_2.txt");
+
         String contentsFirstNegative = FileUtils.readFileToString(new File(pathFirstNegativeFile));
         INDArray featuresFirstNegative = ((CnnSentenceDataSetIterator)testIter).loadSingleSentence(contentsFirstNegative);
 
@@ -149,10 +156,11 @@ public class CnnSentenceClassificationExample {
 
     private static DataSetIterator getDataSetIterator(boolean isTraining, WordVectors wordVectors, int minibatchSize,
                                                       int maxSentenceLength, Random rng ){
-        String path = FilenameUtils.concat(DATA_PATH, (isTraining ? "aclImdb/train/" : "aclImdb/test/"));
-        String positiveBaseDir = FilenameUtils.concat(path, "pos");
-        String negativeBaseDir = FilenameUtils.concat(path, "neg");
-
+//        String path = FilenameUtils.concat(DATA_PATH, (isTraining ? "aclImdb/train/" : "aclImdb/test/"));
+//        String positiveBaseDir = FilenameUtils.concat(path, "pos");
+//        String negativeBaseDir = FilenameUtils.concat(path, "neg");
+        String positiveBaseDir = "/Users/zhouwei/DL4J/testdata/pos";
+        String negativeBaseDir = "/Users/zhouwei/DL4J/testdata/neg";
         File filePositive = new File(positiveBaseDir);
         File fileNegative = new File(negativeBaseDir);
 

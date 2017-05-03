@@ -51,10 +51,15 @@ public class SentimentExampleIterator implements DataSetIterator {
     public SentimentExampleIterator(String dataDirectory, WordVectors wordVectors, int batchSize, int truncateLength, boolean train) throws IOException {
         this.batchSize = batchSize;
         this.vectorSize = wordVectors.getWordVector(wordVectors.vocab().wordAtIndex(0)).length;
-
-
-        File p = new File(FilenameUtils.concat(dataDirectory, "aclImdb/" + (train ? "train" : "test") + "/pos/") + "/");
-        File n = new File(FilenameUtils.concat(dataDirectory, "aclImdb/" + (train ? "train" : "test") + "/neg/") + "/");
+//
+        String positiveBaseDir = "/Users/zhouwei/DL4J/testdata2/" + (train ? "training" : "test") + "/pos/";
+        String negativeBaseDir = "/Users/zhouwei/DL4J/testdata2/" + (train ? "training" : "test") + "/neg/";
+//        String positiveBaseDir = "/Users/zhouwei/DL4J/testdata/pos/";pwd
+//        String negativeBaseDir = "/Users/zhouwei/DL4J/testdata/neg/";
+        File p = new File(positiveBaseDir);
+        File n = new File(negativeBaseDir);
+//        File p = new File(FilenameUtils.concat(dataDirectory, "aclImdb/" + (train ? "train" : "test") + "/pos/") + "/");
+//        File n = new File(FilenameUtils.concat(dataDirectory, "aclImdb/" + (train ? "train" : "test") + "/neg/") + "/");
         positiveFiles = p.listFiles();
         negativeFiles = n.listFiles();
 

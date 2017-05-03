@@ -55,9 +55,11 @@ public class Word2VecSentimentRNN {
     /** Data URL for downloading */
     public static final String DATA_URL = "http://ai.stanford.edu/~amaas/data/sentiment/aclImdb_v1.tar.gz";
     /** Location to save and extract the training/testing data */
-    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+//    public static final String DATA_PATH = FilenameUtils.concat(System.getProperty("java.io.tmpdir"), "dl4j_w2vSentiment/");
+    public static final String DATA_PATH = "/Users/zhouwei/DL4J/testdata2/test";
     /** Location (local file system) for the Google News vectors. Set this manually. */
-    public static final String WORD_VECTORS_PATH = "/PATH/TO/YOUR/VECTORS/GoogleNews-vectors-negative300.bin.gz";
+//    public static final String WORD_VECTORS_PATH = "/PATH/TO/YOUR/VECTORS/GoogleNews-vectors-negative300.bin.gz";
+    public static final String WORD_VECTORS_PATH = "/Users/zhouwei/DL4J/corpus_300.model";
 
 
     public static void main(String[] args) throws Exception {
@@ -66,10 +68,11 @@ public class Word2VecSentimentRNN {
         }
 
         //Download and extract data
-        downloadData();
+//        downloadData();
 
         int batchSize = 64;     //Number of examples in each minibatch
-        int vectorSize = 300;   //Size of the word vectors. 300 in the Google News model
+//        int vectorSize = 300;   //Size of the word vectors. 300 in the Google News model
+        int vectorSize = 100;   //Size of the word vectors. 300 in the Google News model
         int nEpochs = 1;        //Number of epochs (full passes of training data) to train on
         int truncateReviewsToLength = 256;  //Truncate reviews with length (# words) greater than this
 
@@ -119,8 +122,9 @@ public class Word2VecSentimentRNN {
             System.out.println(evaluation.stats());
         }
 
-        //After training: load a single example and generate predictions
-        File firstPositiveReviewFile = new File(FilenameUtils.concat(DATA_PATH, "aclImdb/test/pos/0_10.txt"));
+        /*After training: load a single example and generate predictions*/
+//        File firstPositiveReviewFile = new File(FilenameUtils.concat(DATA_PATH, "aclImdb/test/pos/0_10.txt"));
+        File firstPositiveReviewFile = new File(FilenameUtils.concat(DATA_PATH, "pos/0_8.txt"));
         String firstPositiveReview = FileUtils.readFileToString(firstPositiveReviewFile);
 
         INDArray features = test.loadFeaturesFromString(firstPositiveReview, truncateReviewsToLength);
@@ -133,6 +137,44 @@ public class Word2VecSentimentRNN {
         System.out.println("\n\nProbabilities at last time step:");
         System.out.println("p(positive): " + probabilitiesAtLastWord.getDouble(0));
         System.out.println("p(negative): " + probabilitiesAtLastWord.getDouble(1));
+//        FileOutputStream negtive = new FileOutputStream(new File("/Users/zhouwei/DL4J/testdata2/" + "negtive" + ".txt"));
+//        FileOutputStream postive = new FileOutputStream(new File("/Users/zhouwei/DL4J/testdata2/" + "postive" + ".txt"));
+//        PrintStream negtiveStr = new PrintStream(negtive);
+//        PrintStream postiveStr = new PrintStream(postive);
+//
+//        for (int i = 0; i < 10000; i ++) {
+//            String negtivePath1 = DATA_PATH + "/neg/" + i + "_1.txt";
+//            String negtivePath2 = DATA_PATH + "/neg/" + i + "_2.txt";
+//            File negtiveReviewFile = new File(negtivePath1);
+//            if (!negtiveReviewFile.exists()) {
+//                negtiveReviewFile = new File(negtivePath2);
+//            }
+//            String negtiveReview = FileUtils.readFileToString(negtiveReviewFile);
+//            INDArray features = test.loadFeaturesFromString(negtiveReview, truncateReviewsToLength);
+//            INDArray networkOutput = net.output(features);
+//            int timeSeriesLength = networkOutput.size(2);
+//            INDArray probabilitiesAtLastWord = networkOutput.get(NDArrayIndex.point(0), NDArrayIndex.all(), NDArrayIndex.point(timeSeriesLength - 1));
+//            String resNegtive = "负面第" + i+ "条：" + "p(positive): " + probabilitiesAtLastWord.getDouble(0)  + " p(negative): " + probabilitiesAtLastWord.getDouble(1) + "内容是：" + negtiveReview;
+//            negtiveStr.println(resNegtive);
+//            System.out.println(resNegtive);
+//
+//            String postivePath1 = DATA_PATH + "/pos/" + i + "_7.txt";
+//            String postivePath2 = DATA_PATH + "/pos/" + i + "_8.txt";
+//            File postiveReviewFile = new File(postivePath1);
+//            if (!postiveReviewFile.exists()) {
+//                postiveReviewFile = new File(postivePath2);
+//            }
+//            String postiveReview = FileUtils.readFileToString(postiveReviewFile);
+//            INDArray features2 = test.loadFeaturesFromString(postiveReview, truncateReviewsToLength);
+//            INDArray networkOutput2 = net.output(features2);
+//            int timeSeriesLength2 = networkOutput2.size(2);
+//            INDArray probabilitiesAtLastWord2 = networkOutput2.get(NDArrayIndex.point(0), NDArrayIndex.all(), NDArrayIndex.point(timeSeriesLength2 - 1));
+//            String resPostive = "正面第" + i+ "条：" + "p(positive): " + probabilitiesAtLastWord2.getDouble(0)  + " p(negative): " + probabilitiesAtLastWord2.getDouble(1) + "内容是：" + postiveReview;
+//            negtiveStr.println(resPostive);
+//            System.out.println(resPostive);
+//        }
+//        negtiveStr.close();
+//        postiveStr.close();
 
         System.out.println("----- Example complete -----");
     }

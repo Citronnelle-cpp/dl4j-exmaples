@@ -131,7 +131,8 @@ public class GravesLSTMCharModellingExample {
 		//https://www.gutenberg.org/ebooks/100
 		String url = "https://s3.amazonaws.com/dl4j-distribution/pg100.txt";
 		String tempDir = System.getProperty("java.io.tmpdir");
-		String fileLocation = tempDir + "/Shakespeare.txt";	//Storage location from downloaded file
+//		String fileLocation = tempDir + "/Shakespeare.txt";	//Storage location from downloaded file
+		String fileLocation = "/Users/zhouwei/DL4J/lstm/pg100.txt";
 		File f = new File(fileLocation);
 		if( !f.exists() ){
 			FileUtils.copyURLToFile(new URL(url), f);

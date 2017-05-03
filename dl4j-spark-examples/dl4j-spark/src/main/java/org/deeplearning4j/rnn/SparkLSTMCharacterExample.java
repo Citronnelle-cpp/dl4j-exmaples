@@ -43,7 +43,7 @@ import java.util.*;
  * Example: Train a LSTM RNN to generates text, one character at a time.
  * Training here is done on Spark
  *
- * See dl4j-examples/src/main/java/org/deeplearning4j/examples/recurrent/character/GravesLSTMCharModellingExample.java
+ * See dl4j-examples/src/main/java/org/deeplearning4j/examples/recurrent/character/Ø.java
  * for the single-machine version of this example
  *
  * To run the example locally: Run the example as-is. The example is set up to use Spark local by default.
